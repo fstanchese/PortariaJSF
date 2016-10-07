@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{veiculoBean.acao}" />
+			<f:viewParam name="id" value="#{veiculoBean.id}" />
+			<f:event listener="#{veiculoBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadVeiculoTipo">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Veiculos" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+
+				<p:outputLabel value="Morador: " />
+				<p:selectOneMenu id="moradorId"
+					value="#{veiculoBean.veiculoCadastro.morador}"
+					converter="entityConverter"
+					readonly="#{veiculoBean.acao == 'Excluir'}">
+					<f:selectItems value="#{veiculoBean.moradores}" var="morador"
+						itemValue="#{morador}" itemLabel="#{morador.nome}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Placa : " />
+				<p:inputMask id="placaId" mask="a**-9999"
+					converter="upperCaseConverter"
+					value="#{veiculoBean.veiculoCadastro.placa}" maxlength="10"
+					size="10" readonly="#{veiculoBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputMask>
+
+				<p:outputLabel value="Marca : " />
+				<p:selectOneMenu id="marcaId" value="#{veiculoBean.marcaId}"
+					readonly="#{veiculoBean.acao == 'Excluir'}">
+					<p:ajax process="@this" event="change" update="modeloId" />
+					<f:selectItem itemValue="" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{veiculoBean.marcas}" var="marca"
+						itemValue="#{marca.id}" itemLabel="#{marca.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Modelo : " />
+				<p:selectOneMenu id="modeloId"
+					value="#{veiculoBean.veiculoCadastro.modelo}"
+					converter="entityConverter"
+					readonly="#{veiculoBean.acao == 'Excluir'}">
+					<f:selectItem itemValue="" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{veiculoBean.modelos}" var="modelo"
+						itemValue="#{modelo}" itemLabel="#{modelo.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cor : " />
+				<p:selectOneMenu id="corId"
+					value="#{veiculoBean.veiculoCadastro.cor}"
+					converter="entityConverter"
+					readonly="#{veiculoBean.acao == 'Excluir'}">
+					<f:selectItems value="#{veiculoBean.cores}" var="cor"
+						itemValue="#{cor}" itemLabel="#{cor.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Ano : " />
+				<p:inputText id="anoId" value="#{veiculoBean.veiculoCadastro.ano}"
+					maxlength="4" size="10" readonly="#{veiculoBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{veiculoBean.salvar()}"
+					update=":msgGlobal fCadVeiculoTipo:pnlCadastro"
+					rendered="#{veiculoBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{veiculoBean.excluir()}"
+					action="/pages/veiculoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{veiculoBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{veiculoBean.editar()}"
+					action="/pages/veiculoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{veiculoBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{veiculoBean.limpar()}"
+					update="fCadVeiculoTipo:pnlCadastro"
+					rendered="#{veiculoBean.acao=='Novo'}" />
+
+				<p:button value="Voltar" outcome="/pages/veiculoListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

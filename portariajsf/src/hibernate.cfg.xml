@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		<property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+		<property name="connection.username">fstanchese</property>
+		<property name="connection.password">123456</property>
+
+		<property name="connection.pool_size">1</property>
+		<property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		<property name="show_sql">true</property>
+		<property name="hbm2ddl.auto">update</property>
+
+		<mapping class="br.com.portaria.model.Andar" />
+		<mapping class="br.com.portaria.model.Bloco" />
+		<mapping class="br.com.portaria.model.Cor" />
+		<mapping class="br.com.portaria.model.Funcionario" />
+		<mapping class="br.com.portaria.model.Funcao" />
+		<mapping class="br.com.portaria.model.Marca" />
+		<mapping class="br.com.portaria.model.UnidadeTipo" />
+		<mapping class="br.com.portaria.model.MoradorTipo" />
+		<mapping class="br.com.portaria.model.Morador" />
+		<mapping class="br.com.portaria.model.Unidade" />
+		<mapping class="br.com.portaria.model.Modelo" />
+		<mapping class="br.com.portaria.model.Veiculo" />
+		<mapping class="br.com.portaria.model.Visitante" />
+		<mapping class="br.com.portaria.model.VisitanteTipo" />
+	</session-factory>
+
+</hibernate-configuration>

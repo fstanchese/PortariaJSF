@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{unidadeBean.acao}" />
+			<f:viewParam name="id" value="#{unidadeBean.id}" />
+			<f:event listener="#{unidadeBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadUnidadeTipo">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Tipo de Unidade" />
+				</f:facet>
+			</p:toolbar>
+
+			<h:panelGrid id="pnlCadastro" columns="2">
+
+				<p:outputLabel value="Tipo de Unidade : " />
+				<p:selectOneMenu id="unidadetipoid" effect="fade" effectSpeed="200"
+					value="#{unidadeBean.unidadeCadastro.unidadeTipo}"
+					converter="entityConverter">
+					<f:selectItem itemLabel="-- Selecione --" noSelectionOption="true" />
+					<f:selectItems value="#{unidadeBean.unidadeTipos}"
+						var="unidadeTipo" itemValue="#{unidadeTipo}"
+						itemLabel="#{unidadeTipo.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Tipo de Morador : " />
+				<p:selectOneMenu id="moradortipoid" effect="fade" effectSpeed="200"
+					value="#{unidadeBean.unidadeCadastro.moradorTipo}"
+					converter="entityConverter">
+					<f:selectItem itemLabel="-- Selecione --" noSelectionOption="true" />
+					<f:selectItems value="#{unidadeBean.moradorTipos}"
+						var="moradorTipo" itemValue="#{moradorTipo}"
+						itemLabel="#{moradorTipo.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Bloco : " />
+				<p:selectOneMenu id="blocoid" effect="fade" effectSpeed="200"
+					value="#{unidadeBean.unidadeCadastro.bloco}"
+					converter="entityConverter">
+					<f:selectItem itemValue="" itemLabel="--" />
+					<f:selectItems value="#{unidadeBean.blocos}" var="bloco"
+						itemValue="#{bloco}" itemLabel="#{bloco.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Andar : " />
+				<p:selectOneMenu id="andarid" effect="fade" effectSpeed="200"
+					value="#{unidadeBean.unidadeCadastro.andar}"
+					converter="entityConverter">
+					<f:selectItem itemValue="" itemLabel="--" />
+					<f:selectItems value="#{unidadeBean.andares}" var="andar"
+						itemValue="#{andar}" itemLabel="#{andar.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Descrição : " />
+				<p:inputText value="#{unidadeBean.unidadeCadastro.descricao}"
+					maxlength="45" size="30"
+					readonly="#{unidadeBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Ramal : " />
+				<p:inputText value="#{unidadeBean.unidadeCadastro.ramal}"
+					maxlength="8" size="10" readonly="#{unidadeBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Telefone Fixo: " />
+				<p:inputText value="#{unidadeBean.unidadeCadastro.telefone}"
+					id="telefoneFix" onfocus="phoneMaskHandler(event);"
+					onblur="phoneMaskHandler(event);">
+				</p:inputText>
+
+				<p:outputLabel value="Vagas : " />
+				<p:inputText value="#{unidadeBean.unidadeCadastro.vagas}"
+					maxlength="1" size="5" readonly="#{unidadeBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="6">
+				<p:commandButton value="Salvar"
+					actionListener="#{unidadeBean.salvar()}"
+					update=":msgGlobal pnlCadastro"
+					rendered="#{unidadeBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{unidadeBean.excluir()}"
+					action="/pages/unidadeListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{unidadeBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{unidadeBean.editar()}"
+					action="/pages/unidadeListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{unidadeBean.acao=='Editar'}" />
+
+				<p:button value="Voltar" outcome="/pages/unidadeListar.xhtml" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{unidadeBean.limpar()}" update="pnlCadastro"
+					rendered="#{unidadeBean.acao=='Novo'}" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

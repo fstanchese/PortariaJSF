@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:insert name="metadata" />
+
+<h:head>
+	<title>Portaria - JSF 2 - MySQL</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<h:outputScript library="js" name="portaria.js" />
+</h:head>
+
+<h:body>
+	<p:growl id="msgGlobal" life="3000" sticky="true" />
+	<p:layout fullPage="true">
+
+		<p:layoutUnit header="Sistema Controle de Portaria" position="north"
+			resizable="false" closable="false" collapsed="false">
+		</p:layoutUnit>
+
+		<p:layoutUnit header="Todos os direitos pirateados." position="south"
+			resizable="false" closable="false" collapsed="false">
+		</p:layoutUnit>
+
+		<p:layoutUnit size="190" header="Menu Principal" position="west"
+			resizable="false" closable="false" collapsed="false">
+			<h:form id="frmMenuPrincipal">
+				<p:panelMenu id="pnlMenuPrincipal">
+					<p:submenu label="Sistema">
+						<p:menuitem value="Login" outcome="/pages/autenticar.xhtml"
+							rendered="#{autenticarBean.funcionarioLogado.funcao == null}" />
+						<p:menuitem value="Logout" action="#{autenticarBean.sair}"
+							rendered="#{autenticarBean.funcionarioLogado.funcao != null}" />
+					</p:submenu>
+					<p:submenu label="Cadastros"
+						rendered="#{autenticarBean.funcionarioLogado.funcao.descricao == 'Administrador' }">
+						<p:menuitem value="Veiculos" outcome="/pages/veiculoListar.xhtml" />
+						<p:menuitem value="Moradores" outcome="/pages/moradorListar.xhtml" />
+						<p:menuitem value="Unidades" outcome="/pages/unidadeListar.xhtml" />
+					</p:submenu>
+					<p:submenu label="Tabelas"
+						rendered="#{autenticarBean.funcionarioLogado.funcao.descricao == 'Administrador'}">
+						<p:menuitem value="Andares" outcome="/pages/andarListar.xhtml" />
+						<p:menuitem value="Blocos" outcome="/pages/blocoListar.xhtml" />
+						<p:menuitem value="Cores" outcome="/pages/corListar.xhtml" />
+						<p:menuitem value="Funções" outcome="/pages/funcaoListar.xhtml" />
+						<p:menuitem value="Funcionários"
+							outcome="/pages/funcionarioListar.xhtml" />
+						<p:menuitem value="Marcas" outcome="/pages/marcaListar.xhtml" />
+						<p:menuitem value="Modelos" outcome="/pages/modeloListar.xhtml" />
+						<p:menuitem value="Tipos de Morador"
+							outcome="/pages/moradorTipoListar.xhtml" />
+						<p:menuitem value="Tipos de Unidade"
+							outcome="/pages/unidadeTipoListar.xhtml" />
+						<p:menuitem value="Tipos de Visitante"
+							outcome="/pages/visitanteTipoListar.xhtml" />
+					</p:submenu>
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit size="190" header="Menu Operacional" position="east"
+			resizable="false" closable="false" collapsed="false">
+			<h:form id="frmMenuOperacional">
+				<p:panelMenu id="pnlMenuOperacional">
+					<p:submenu label="Visitantes"
+						rendered="#{autenticarBean.funcionarioLogado.funcao.descricao == 'Administrador' }">
+						<p:menuitem value="Visitas" outcome="/pages/visitanteListar.xhtml" />
+					</p:submenu>
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" resizable="false" closable="false"
+			collapsed="false">
+
+			<ui:insert name="conteudo" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

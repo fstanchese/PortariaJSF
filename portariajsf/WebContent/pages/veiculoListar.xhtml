@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="">
+		<f:metadata>
+			<f:event listener="#{veiculoBean.carregarLista}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="formListar">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Lista de Veiculos" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="dtVeiculoTipo"
+				emptyMessage="Nenhum registro encontrado"
+				value="#{veiculoBean.veiculos}" var="veiculo"
+				rows="18" paginator="true" 	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				sttyle="text-align: center; font-weight: bold;">
+
+				<f:facet name="footer">
+					<p:button value="Novo" outcome="/pages/veiculoCadastro.xhtml">
+						<f:param name="acao" value="Novo" />
+					</p:button>
+					<p:button value="Voltar" outcome="/pages/principal.xhtml"/>
+				</f:facet>
+				
+				<p:column headerText="Morador" filterBy="#{veiculo.morador.nome}"
+					sortBy="#{veiculo.morador.nome}">
+					<h:outputText value="#{veiculo.morador.nome}" style="width:33%"/>
+				</p:column>
+				
+				<p:column headerText="Unidade" filterBy="#{veiculo.morador.unidade.descricao}"
+					sortBy="#{veiculo.morador.unidade.descricao}">
+					<h:outputText value="#{veiculo.morador.unidade.descricao}" style="width:20%"/>
+				</p:column>		
+						
+				<p:column headerText="Placa" filterBy="#{veiculo.placa}"
+					sortBy="#{veiculo.placa}" style="width:8%">
+					<h:outputText value="#{veiculo.placa}" />
+				</p:column>
+				
+				<p:column headerText="Modelo" filterBy="#{veiculo.modelo.descricao}" 
+					sortBy="#{veiculo.modelo.descricao}" style="width:15%">
+					<h:outputText value="#{veiculo.modelo.marca.descricao} #{veiculo.modelo.descricao}" />
+				</p:column>
+
+				<p:column headerText="Ano" filterBy="#{veiculo.ano}" 
+					sortBy="#{veiculo.ano}" style="width:7%">
+					<h:outputText value="#{veiculo.ano} " />
+				</p:column>
+				
+				<p:column headerText="Cor" filterBy="#{veiculo.cor.descricao}"
+					sortBy="#{veiculo.cor.descricao}" style="width:7%">
+					<h:outputText value="#{veiculo.cor.descricao}" />
+				</p:column>
+
+				<p:column headerText="Ação" style="width:15%">
+					<p:button value="Excluir" outcome="/pages/veiculoCadastro.xhtml">
+						<f:param name="acao" value="Excluir" />
+						<f:param name="id" value="#{veiculo.id}" />
+					</p:button>
+					<p:button value="Editar" outcome="/pages/veiculoCadastro.xhtml">
+						<f:param name="acao" value="Editar" />
+						<f:param name="id" value="#{veiculo.id}" />
+					</p:button>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

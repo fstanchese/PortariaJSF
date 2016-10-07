@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{moradorTipoBean.acao}" />
+			<f:viewParam name="id" value="#{moradorTipoBean.id}" />
+			<f:event listener="#{moradorTipoBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadMoradorTipo">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Tipo de Morador" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+				<p:outputLabel value="Descrição : " />
+				<p:inputText value="#{moradorTipoBean.moradorTipoCadastro.descricao}"
+					maxlength="45" size="30" readonly="#{moradorTipoBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{moradorTipoBean.salvar()}"
+					update=":msgGlobal fCadMoradorTipo:pnlCadastro"
+					rendered="#{moradorTipoBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{moradorTipoBean.excluir()}"
+					action="/pages/moradorTipoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{moradorTipoBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{moradorTipoBean.editar()}"
+					action="/pages/moradorTipoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{moradorTipoBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{moradorTipoBean.limpar()}"
+					update="fCadMoradorTipo:pnlCadastro"
+					rendered="#{moradorTipoBean.acao=='Novo'}" />
+					
+				<p:button value="Voltar" outcome="/pages/moradorTipoListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

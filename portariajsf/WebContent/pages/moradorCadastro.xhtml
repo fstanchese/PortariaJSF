@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{moradorBean.acao}" />
+			<f:viewParam name="id" value="#{moradorBean.id}" />
+			<f:event listener="#{moradorBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadMorador">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Morador" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+
+				<p:outputLabel value="Unidade : " />
+				<p:selectOneMenu value="#{moradorBean.moradorCadastro.unidade}"
+					converter="entityConverter">
+					<f:selectItem itemValue="" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{moradorBean.unidades}" var="unidade"
+						itemValue="#{unidade}" itemLabel="#{unidade.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Nome : " />
+				<p:inputText value="#{moradorBean.moradorCadastro.nome}"
+					maxlength="100" size="100"
+					readonly="#{moradorBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="CPF : " />
+				<p:inputMask mask="999.999.999-99" id="cpf" size="17"
+					value="#{moradorBean.moradorCadastro.cpf}" maxlength="15"
+					readonly="#{moradorBean.acao == 'Excluir'}"
+					converter="cpfConverter">
+					<f:validator validatorId="cpfValidator" />
+				</p:inputMask>
+
+				<p:outputLabel value="Documento : " />
+				<p:inputText value="#{moradorBean.moradorCadastro.documento}"
+					maxlength="20" size="20"
+					readonly="#{moradorBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Data Nascimento : " />
+				<p:calendar  navigator="true"
+					value="#{moradorBean.moradorCadastro.datanascto}"
+					pattern="dd-MM-yyyy" mask="true">
+				</p:calendar>
+
+
+				<p:outputLabel value="Celular " />
+				<p:inputText value="#{moradorBean.moradorCadastro.celular}"
+					id="telefoneFix" style="width: 150px;"
+					onfocus="phoneMaskHandler(event);"
+					onblur="phoneMaskHandler(event);">
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{moradorBean.salvar()}"
+					update=":msgGlobal fCadMorador:pnlCadastro"
+					rendered="#{moradorBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{moradorBean.excluir()}"
+					action="/pages/moradorListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{moradorBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{moradorBean.editar()}"
+					action="/pages/moradorListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{moradorBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{moradorBean.limpar()}"
+					update="fCadMorador:pnlCadastro"
+					rendered="#{moradorBean.acao=='Novo'}" />
+
+				<p:button value="Voltar" outcome="/pages/moradorListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

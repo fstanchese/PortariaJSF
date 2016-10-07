@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="">
+		<f:metadata>
+			<f:event listener="#{visitanteBean.carregarLista}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="formListar">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Lista de Visitantes" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="dtVisitanteTipo"
+				emptyMessage="Nenhum registro encontrado"
+				value="#{visitanteBean.visitantes}" var="visitante"
+				rows="18" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				sttyle="text-align: center; font-weight: bold;">
+
+				<f:facet name="footer">
+					<p:button value="Novo" outcome="/pages/visitanteCadastro.xhtml">
+						<f:param name="acao" value="Novo" />
+					</p:button>
+					<p:button value="Voltar" outcome="/pages/principal.xhtml" />
+				</f:facet>
+
+				<p:column headerText="Id" style="width:5%">
+					<h:outputText value="#{visitante.id}" />
+				</p:column>
+
+				<p:column headerText="Unidade Visitada"
+					filterBy="#{visitante.unidade.descricao}"
+					sortBy="#{visitante.unidade.descricao}">
+					<h:outputText value="#{visitante.unidade.descricao}"
+						style="width:45%" />
+				</p:column>
+
+				<p:column headerText="Visitante" filterBy="#{visitante.nome}"
+					sortBy="#{visitante.nome}">
+					<h:outputText value="#{visitante.nome}" style="width:45%" />
+				</p:column>
+
+				<p:column headerText="Veiculo"
+					filterBy="#{visitante.modelo.descricao}"
+					sortBy="#{visitante.modelo.descricao}" style="width:15%">
+					<h:outputText value="#{visitante.placa} #{visitante.modelo.marca.descricao} #{visitante.modelo.descricao} #{visitante.cor.descricao} " />
+
+				</p:column>
+
+				<p:column headerText="Entrada" filterBy="#{visitante.entrada}"
+					sortBy="#{visitante.entrada}">
+					<h:outputText value="#{visitante.entrada}" style="width:45%">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Saida" filterBy="#{visitante.saida}"
+					sortBy="#{visitante.saida}">
+					<h:outputText value="#{visitante.saida}" style="width:45%">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Ação" style="width:16%">
+					<p:button value="Excluir" outcome="/pages/visitanteCadastro.xhtml">
+						<f:param name="acao" value="Excluir" />
+						<f:param name="id" value="#{visitante.id}" />
+					</p:button>
+					<p:button value="Editar" outcome="/pages/visitanteCadastro.xhtml">
+						<f:param name="acao" value="Editar" />
+						<f:param name="id" value="#{visitante.id}" />
+					</p:button>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

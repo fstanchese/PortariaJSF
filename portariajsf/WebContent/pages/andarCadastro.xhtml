@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{andarBean.acao}" />
+			<f:viewParam name="id" value="#{andarBean.id}" />
+			<f:event listener="#{andarBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadAndar">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Andar" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+				<p:outputLabel value="Descrição : " />
+				<p:inputText value="#{andarBean.andarCadastro.descricao}"
+					maxlength="45" size="30" readonly="#{andarBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{andarBean.salvar()}"
+					update=":msgGlobal fCadAndar:pnlCadastro"
+					rendered="#{andarBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{andarBean.excluir()}"
+					action="/pages/andarListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{andarBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{andarBean.editar()}"
+					action="/pages/andarListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{andarBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{andarBean.limpar()}"
+					update="fCadAndar:pnlCadastro"
+					rendered="#{andarBean.acao=='Novo'}" />
+					
+				<p:button value="Voltar" outcome="/pages/andarListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

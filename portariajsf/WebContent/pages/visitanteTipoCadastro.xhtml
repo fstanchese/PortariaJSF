@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{visitanteTipoBean.acao}" />
+			<f:viewParam name="id" value="#{visitanteTipoBean.id}" />
+			<f:event listener="#{visitanteTipoBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadVisitanteTipo">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Tipo de Visitante" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+				<p:outputLabel value="Descrição : " />
+				<p:inputText value="#{visitanteTipoBean.visitanteTipoCadastro.descricao}"
+					maxlength="45" size="30" readonly="#{visitanteTipoBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{visitanteTipoBean.salvar()}"
+					update=":msgGlobal fCadVisitanteTipo:pnlCadastro"
+					rendered="#{visitanteTipoBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{visitanteTipoBean.excluir()}"
+					action="/pages/visitanteTipoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{visitanteTipoBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{visitanteTipoBean.editar()}"
+					action="/pages/visitanteTipoListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{visitanteTipoBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{visitanteTipoBean.limpar()}"
+					update="fCadVisitanteTipo:pnlCadastro"
+					rendered="#{visitanteTipoBean.acao=='Novo'}" />
+					
+				<p:button value="Voltar" outcome="/pages/visitanteTipoListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

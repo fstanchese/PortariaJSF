@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="acao" value="#{visitanteBean.acao}" />
+			<f:viewParam name="id" value="#{visitanteBean.id}" />
+			<f:event listener="#{visitanteBean.carregarDados}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	<ui:define name="conteudo">
+		<h:form id="fCadVisitanteTipo">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Visitantes" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2">
+
+				<p:outputLabel value="Unidade: " />
+				<p:selectOneMenu id="unidadeId"
+					value="#{visitanteBean.visitanteCadastro.unidade}"
+					converter="entityConverter" readonly="#{visitanteBean.acao == 'Excluir'}">
+					<f:selectItems value="#{visitanteBean.unidades}" var="unidade"
+						itemValue="#{unidade}" itemLabel="#{unidade.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Nome : " />
+				<p:inputText value="#{visitanteBean.visitanteCadastro.nome}"
+					maxlength="100" size="90"
+					readonly="#{visitanteBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
+				
+				<p:outputLabel value="Placa : " />
+				<p:inputMask id="placaId" mask="a**-9999"
+					converter="upperCaseConverter"
+					value="#{visitanteBean.visitanteCadastro.placa}" maxlength="10"
+					size="10" readonly="#{visitanteBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputMask>
+
+				<p:outputLabel value="Marca : " />
+				<p:selectOneMenu id="marcaId" value="#{visitanteBean.marcaId}" 
+					readonly="#{visitanteBean.acao == 'Excluir'}">
+					<p:ajax process="@this" event="change" update="modeloId" />
+					<f:selectItem itemValue="" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{visitanteBean.marcas}" var="marca"
+						itemValue="#{marca.id}" itemLabel="#{marca.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Modelo : " />
+				<p:selectOneMenu id="modeloId"
+					value="#{visitanteBean.visitanteCadastro.modelo}"
+					converter="entityConverter"
+					readonly="#{visitanteBean.acao == 'Excluir'}">
+					<f:selectItem itemValue="" itemLabel="-- Selecione --" />
+					<f:selectItems value="#{visitanteBean.modelos}" var="modelo"
+						itemValue="#{modelo}" itemLabel="#{modelo.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cor : " />
+				<p:selectOneMenu id="corId"
+					value="#{visitanteBean.visitanteCadastro.cor}"
+					converter="entityConverter"
+					readonly="#{visitanteBean.acao == 'Excluir'}">
+					<f:selectItems value="#{visitanteBean.cores}" var="cor"
+						itemValue="#{cor}" itemLabel="#{cor.descricao}" />
+					<f:validateBean />
+				</p:selectOneMenu>
+			</h:panelGrid>
+
+			<h:panelGrid columns="5">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{visitanteBean.salvar()}"
+					update=":msgGlobal fCadVisitanteTipo:pnlCadastro"
+					rendered="#{visitanteBean.acao=='Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{visitanteBean.excluir()}"
+					action="/pages/visitanteListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{visitanteBean.acao=='Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{visitanteBean.editar()}"
+					action="/pages/visitanteListar.xhtml?faces-redirect=true"
+					update=":msgGlobal" rendered="#{visitanteBean.acao=='Editar'}" />
+
+				<p:commandButton value="Limpar"
+					actionListener="#{visitanteBean.limpar()}"
+					update="fCadVisitanteTipo:pnlCadastro"
+					rendered="#{visitanteBean.acao=='Novo'}" />
+
+				<p:button value="Voltar" outcome="/pages/visitanteListar.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

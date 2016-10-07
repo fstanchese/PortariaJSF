@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/modeloGeral.xhtml">
+	<ui:define name="conteudo">
+		<h:form id="fAutenticar">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Autenticação" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid id="pnlCadastro" columns="2" >
+				<p:outputLabel value="Login : " />
+				<p:inputText value="#{autenticarBean.funcionarioLogado.login}" 	maxlength="10" size="20">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Senha : " />
+				<p:password value="#{autenticarBean.funcionarioLogado.senha}"  maxlength="8" size="20">
+					<f:validateBean />
+				</p:password>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<p:commandButton value="Entrar" update=":msgGlobal" 
+				action="#{autenticarBean.entrar}"/>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
